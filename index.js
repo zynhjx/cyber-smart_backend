@@ -20,6 +20,10 @@ app.use(cors({
     origin: "https://zynhjx.github.io/cyber-smart/"
 }))
 
+app.get("/", (req, res) => {
+    res.send("try")
+})
+
 app.post("/login", async (req, res) => {
     try {
         const result = await pool.query("SELECT * FROM users WHERE username = $1", [req.body.username])
