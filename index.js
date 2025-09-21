@@ -46,6 +46,34 @@ app.post("/login", async (req, res) => {
     
 })
 
+app.post("/register", async (req, res) => {
+  try {
+    const { username, email, password } = req.body;
+
+    const existing = await pool.query(
+      "SELECT * FROM users WHERE username = $1 OR email = $2",
+      [username, email]
+    );
+
+    if (existing.rows.length > 0) {
+      res.status(400).json({ success: false, message: "Username or email already exists" });
+      return;
+    }
+
+    await pool.query(
+      "INSERT INTO users (username, email, password) VALUES ($1, $2, $3)",
+      [username, email, password]
+    );
+
+    res.json({ success: true, message: "User registered successfully" });
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ success: false, message: "Server error" });
+  }
+});
+
+
 app.listen(3000, () => {
-    console.log("ridawd")
+    console.log("Running...")
 })
