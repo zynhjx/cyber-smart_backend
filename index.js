@@ -39,11 +39,28 @@ function requireLogin(req, res, next) {
   }
 }
 
-app.get("/dashboard-data", requireLogin, (req, res) => {
-  res.json({ 
-    username: req.session.user.username,
-    loggedIn: true
-  });
+app.get("/dashboard-data", requireLogin, async (req, res) => {
+  try {
+    const result = await pool.query(
+      "SELECT id, username, email FROM users WHERE id = $1",
+      [req.session.user.id]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ success: false, message: "User not found" });
+    }
+
+    const user = result.rows[0];
+
+    res.json({
+      username: user.username,
+      email: user.email,
+      loggedIn: true
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ success: false, message: "Server error" });
+  }
 });
 
 
@@ -56,22 +73,24 @@ app.post("/login", async (req, res) => {
         const result = await pool.query("SELECT * FROM users WHERE username = $1", [req.body.username])
 
         if (result.rows.length === 0) {
-
-            req.session.user = {
-              id: result.rows[0].id,
-              username: result.rows[0].username,
-              email: result.rows[0].email
-            };
-
             res.status(401).json({ success: false, message: "User not found" });
             return;
         }
 
-        if (req.body.password === result.rows[0].password) {
-            res.json({ success: true })
-        } else {
-            res.json({ success: false })
+        const user = result.rows[0];
+        const isMatch = await bcrypt.compare(req.body.password, user.password);
+
+        if (!isMatch) {
+            return res.status(401).json({ success: false, message: "Incorrect password" });
         }
+
+        req.session.user = {
+            id: user.id,
+            username: user.username,
+            email: user.email
+        };
+
+        res.json({ success: true })
     } catch (err) {
         console.error(err);
         res.status(500).json({ success: false, message: "Server error" });
