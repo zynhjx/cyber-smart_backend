@@ -16,9 +16,7 @@ const PORT = 3000
 app.use(bodyParser.urlencoded({ extended: true}))
 app.use(bodyParser.json())
 
-app.use(cors({
-    origin: "https://zynhjx.github.io/cyber-smart/"
-}))
+app.use(cors())
 
 async function testConnection() {
   try {
