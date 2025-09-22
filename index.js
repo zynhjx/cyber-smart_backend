@@ -11,7 +11,7 @@ const pool = new Pool({
 });
 
 const app = express();
-
+const PORT = process.env.PORT || 3000
 
 app.use(bodyParser.urlencoded({ extended: true}))
 app.use(bodyParser.json())
@@ -19,6 +19,18 @@ app.use(bodyParser.json())
 app.use(cors({
     origin: "https://zynhjx.github.io/cyber-smart/"
 }))
+
+async function testConnection() {
+  try {
+    const client = await pool.connect();
+    console.log("Connected to database successfully");
+    client.release();
+  } catch (err) {
+    console.error("Database connection error:", err.stack);
+  }
+}
+
+testConnection();
 
 app.get("/", (req, res) => {
     res.send("try")
@@ -74,6 +86,6 @@ app.post("/register", async (req, res) => {
 });
 
 
-app.listen(3000, () => {
+app.listen(PORT, () => {
     console.log("Running...")
 })
