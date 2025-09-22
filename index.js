@@ -17,7 +17,10 @@ const saltRounds = 10;
 app.use(bodyParser.urlencoded({ extended: true}))
 app.use(bodyParser.json())
 
-app.use(cors())
+app.use(cors({
+  origin: "https://zynhjx.github.io",
+  credentials: true  
+}))
 
 app.use(session({
   secret: process.env.SESSION_SECRET,
