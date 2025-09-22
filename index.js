@@ -38,7 +38,7 @@ function requireLogin(req, res, next) {
   if (req.session.user) {
     return next();
   } else {
-    res.status(401).json({ success: false, message: "Not logged in" });
+    res.status(401).json({ success: false, message: "Not logged in", display: req.session});
   }
 }
 
