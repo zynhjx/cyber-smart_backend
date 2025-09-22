@@ -1,9 +1,9 @@
-
 import express from "express";
 import session from "express-session";
 import bodyParser from "body-parser";
 import cors from "cors"
 import { Pool } from "pg";
+import bcrypt from "bcrypt"
 
 const pool = new Pool({
     connectionString: process.env.DATABASE_URL,
@@ -12,23 +12,26 @@ const pool = new Pool({
 
 const app = express();
 const PORT = 3000
+const saltRounds = 10;
 
 app.use(bodyParser.urlencoded({ extended: true}))
 app.use(bodyParser.json())
 
 app.use(cors())
 
-async function testConnection() {
-  try {
-    const client = await pool.connect();
-    console.log("Connected to database successfully");
-    client.release();
-  } catch (err) {
-    console.error("Database connection error:", err.stack);
+app.use(session({
+  secret: process.env.SESSION_SECRET,
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    maxAge: 1000 * 60 * 60,
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "lax"
   }
-}
+}));
 
-testConnection();
+
 
 app.get("/", (req, res) => {
     res.send("try")
@@ -70,9 +73,11 @@ app.post("/register", async (req, res) => {
       return;
     }
 
+    const hashedPassword = await bcrypt.hash(password, saltRounds);
+
     await pool.query(
       "INSERT INTO users (username, email, password) VALUES ($1, $2, $3)",
-      [username, email, password]
+      [username, email, hashedPassword]
     );
 
     res.json({ success: true, message: "User registered successfully" });
