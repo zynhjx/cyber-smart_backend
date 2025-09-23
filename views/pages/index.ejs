@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>CyberSmart</title>
+        <link rel="stylesheet" href="./css/style.css">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Bitcount+Single:wght@100..900&family=Russo+One&display=swap" rel="stylesheet">
+    </head>
+    <body>
+        <div class="preloader">
+            <p>Getting things ready...</p>
+        </div>
+        <video autoplay muted loop preload="auto" id="bg-video">
+            <source src="./assets/looped-bg.mp4" type="video/mp4">
+        </video>
+        <div class="container">
+            <div class="greet">
+                <div class="h1">
+                    <p class="first">Welcome</p>
+                    <p class="second">to CyberSmart</p>
+                </div>
+                <p class="third">Train your instincts. Test your security.</p>
+                <p class="fourth">CyberSmart helps you improve your instincts and spot threats before they hit.</p>
+            </div>
+            <div class="btn">
+                <button onclick="window.location.href='/dashboard'">Play</button>
+            </div>
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+        <script src="./js/index.js"></script>
+    </body>
+</html>

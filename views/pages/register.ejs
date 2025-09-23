@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Register — Cyber Smart</title>
+  <link rel="stylesheet" href="./css/register.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bitcount+Single:wght@100..900&family=Russo+One&display=swap" rel="stylesheet">
+</head>
+  <body>
+    <div class="login-container">
+      <div class="login-box">
+        <h2>Create Account</h2>
+        <form id="registerForm">
+          <label for="username">Username</label>
+          <input type="text" id="username" name="username" required />
+
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" required />
+
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password" required />
+
+          <label for="confirm-password">Confirm Password</label>
+          <input type="password" id="confirm-password" name="confirm-password" required />
+
+          <!-- Inline error message -->
+          <div id="errorMessage" class="error-message"></div>
+
+          <button type="submit">Register</button>
+        </form>
+        <div class="links">
+          <p>Already have an account? <a href="/login">Log in</a></p>
+        </div>
+      </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="./js/register.js"></script>
+  </body>
+</html>

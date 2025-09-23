@@ -1,0 +1,100 @@
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background-color: rgb(0, 0, 0); /* Updated background */
+  color: #fff;
+}
+
+
+
+.login-container {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgb(0, 0, 0); /* Keep consistent */
+  position: relative;
+}
+
+.login-box {
+  background-color: rgba(0, 0, 0, 0.75);
+  padding: 40px;
+  border: 2px solid rgb(255, 96, 255);
+  border-radius: 50px;
+  width: 90%;
+  max-width: 400px;
+  box-shadow: 0 0 50px rgb(255, 96, 255);
+}
+
+.login-box h2 {
+  margin-bottom: 30px;
+  color: #feffff;
+  text-align: center;
+  font-size: 1.8rem;
+  font-family: 'Bitcount Single';
+  font-weight: 400;
+}
+
+.login-box label {
+  font-size: 0.9rem;
+  margin-bottom: 6px;
+  display: block;
+  color: #ccc;
+}
+
+.login-box input {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 20px;
+  border: none;
+  border-radius: 5px;
+  background-color: #1a1a1a;
+  color: #fff;
+  font-size: 1rem;
+}
+
+.login-box button {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: 5px;
+  background-color: rgb(128, 28, 128);
+  color: #ffffff;
+  font-weight: bold;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.login-box button:hover {
+  opacity: 0.8;
+}
+
+.login-box .links {
+  text-align: center;
+  margin-top: 1
+}
+
+.login-box .links a {
+  color: #00c2ff;
+  text-decoration: none;
+}
+
+.login-box .links a:hover {
+  text-decoration: underline;
+}
+
+.error-message {
+  color: #ff6b6b;          /* red-ish error color */
+  font-size: 0.85rem;
+  margin-top: -15px;       /* slightly above button/input */
+  margin-bottom: 15px;
+  min-height: 18px;        /* keep space even if no error */
+  transition: opacity 0.2s ease;
+}
+
+/* Red border for invalid inputs */
+.input-error {
+  border: 1.5px solid #ff6b6b;
+  background-color: #2a1a1a; /* subtle dark red background */
+}

@@ -4,10 +4,12 @@ import bodyParser from "body-parser";
 import cors from "cors"
 import { Pool } from "pg";
 import bcrypt from "bcrypt"
+import passport from "passport"
+import { Strategy } from "passport-local"
 
 const pool = new Pool({
-    connectionString: process.env.DATABASE_URL,
-    ssl: { rejectUnauthorized: false }
+    connectionString: "postgresql://postgres:rwBYvtevrTuVYhQUyFbzUjLVQcAhPgpC@shortline.proxy.rlwy.net:26818/railway" , // process.env.DATABASE_URL,
+    ssl: false // { rejectUnauthorized: false }
 });
 
 const app = express();
@@ -17,120 +19,161 @@ const saltRounds = 10;
 app.use(bodyParser.urlencoded({ extended: true}))
 app.use(bodyParser.json())
 
+// app.use(cors({
+//   origin: "https://zynhjx.github.io",
+//   credentials: true  
+// }))
+
 app.use(cors({
-  origin: "https://zynhjx.github.io",
-  credentials: true  
-}))
+    origin: "http://127.0.0.1:5500", 
+    credentials: true             
+}));
+
 
 app.use(session({
-  secret: process.env.SESSION_SECRET,
+  secret: "dawdawdasdafsfdrg", // process.env.SESSION_SECRET
   resave: false,
   saveUninitialized: false,
   cookie: {
     maxAge: 1000 * 60 * 60,
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: "none"
+    secure: false, // process.env.NODE_ENV === "production"
+    sameSite: "lax" // "none"
   }
 }));
 
-function requireLogin(req, res, next) {
-  if (req.session.user) {
-    return next();
+app.set("view engine", "ejs")
+app.use(express.static("public"))
+
+app.get("/", (req, res) => {
+  res.render("pages/index")
+})
+
+app.use(passport.initialize())
+app.use(passport.session())
+
+app.get("/dashboard", async (req, res) => {
+
+  if (!req.isAuthenticated()) {
+    res.redirect("login")
   } else {
-    res.status(401).json({ success: false, message: "Not logged in", display: req.session});
+    res.render("pages/dashboard")
   }
-}
 
-app.get("/dashboard-data", requireLogin, async (req, res) => {
-  try {
-    const result = await pool.query(
-      "SELECT id, username, email FROM users WHERE id = $1",
-      [req.session.user.id]
-    );
-
-    if (result.rows.length === 0) {
-      return res.status(404).json({ success: false, message: "User not found" });
-    }
-
-    const user = result.rows[0];
-
-    res.json({
-      username: user.username,
-      email: user.email,
-      loggedIn: true
-    });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ success: false, message: "Server error" });
-  }
+  
 });
 
 
-app.get("/", (req, res) => {
-    res.send("try")
+app.get("/login", (req, res) => {
+  res.render("pages/login")
 })
 
-app.post("/login", async (req, res) => {
-    try {
-        const result = await pool.query("SELECT * FROM users WHERE username = $1", [req.body.username])
+app.post("/login", (req, res, next) => {
+  passport.authenticate("local", (err, user, info) => {
+    if (err) return next(err)
 
-        if (result.rows.length === 0) {
-            res.status(401).json({ success: false, message: "User not found" });
-            return;
-        }
-
-        const user = result.rows[0];
-        const isMatch = await bcrypt.compare(req.body.password, user.password);
-
-        if (!isMatch) {
-            return res.status(401).json({ success: false, message: "Incorrect password" });
-        }
-
-        req.session.user = {
-            id: user.id,
-            username: user.username,
-            email: user.email
-        };
-
-        res.json({ success: true })
-    } catch (err) {
-        console.error(err);
-        res.status(500).json({ success: false, message: "Server error" });
+    if (!user) {
+      // Generic login failure message for security
+      return res.status(401).json({
+        success: false,
+        message: "Username or password is incorrect"
+      });
     }
-    
-    
+
+    req.logIn(user, (err) => {
+      if (err) return next(err)
+      return res.json({ success: true, message: "Login successful", user: { username: user.username } })
+    })
+  })(req, res, next)
 })
 
-app.post("/register", async (req, res) => {
+app.get("/register", (req, res) => {
+  res.render("pages/register")
+})
+
+app.post("/register", async (req, res, next) => {
   try {
     const { username, email, password } = req.body;
 
+    // Check if username or email already exists
     const existing = await pool.query(
       "SELECT * FROM users WHERE username = $1 OR email = $2",
       [username, email]
     );
 
     if (existing.rows.length > 0) {
-      res.status(400).json({ success: false, message: "Username or email already exists" });
-      return;
+      return res
+        .status(400)
+        .json({ success: false, message: "Username or email already exists" });
     }
 
-    const hashedPassword = await bcrypt.hash(password, saltRounds);
+    // Hash password
+    const hashedPassword = await bcrypt.hash(password, 10);
 
-    await pool.query(
-      "INSERT INTO users (username, email, password) VALUES ($1, $2, $3)",
+    // Insert user
+    const result = await pool.query(
+      "INSERT INTO users (username, email, password) VALUES ($1, $2, $3) RETURNING *",
       [username, email, hashedPassword]
     );
 
-    res.json({ success: true, message: "User registered successfully" });
+    const user = result.rows[0];
+
+    // Auto-login with passport
+    req.login(user, (err) => {
+      if (err) return next(err);
+      res.json({ success: true, message: "Registration successful!" });
+    });
 
   } catch (err) {
     console.error(err);
-    res.status(500).json({ success: false, message: "Server error" });
+    res
+      .status(500)
+      .json({ success: false, message: "Server error" });
   }
 });
 
+passport.use(
+  new Strategy(async function verify(username, password, cb) {
+  try {
+      const result = await pool.query("SELECT * FROM users WHERE username = $1", [username])
+
+      if (result.rows.length === 0) {
+          return cb(null, false, { message: "User not found" });
+      }
+
+      const user = result.rows[0];
+      const isMatch = await bcrypt.compare(password, user.password);
+
+      if (!isMatch) {
+          return cb(null, false, { message: "Incorrect password" });
+      }
+
+      return cb(null, user)
+
+      
+    } catch (err) {
+        return cb(err)
+    }
+}))
+
+passport.serializeUser((user, done) => {
+  done(null, user.id);
+});
+
+passport.deserializeUser(async (id, done) => {
+  try {
+    const result = await pool.query("SELECT * FROM users WHERE id = $1", [id]);
+
+    if (result.rows.length === 0) {
+      return done(null, false);
+    }
+
+    const user = result.rows[0];
+    done(null, user);
+  } catch (err) {
+    done(err);
+  }
+});
 
 app.listen(PORT, () => {
     console.log("Running...")
