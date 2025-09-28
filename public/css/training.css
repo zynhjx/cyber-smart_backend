@@ -1,0 +1,159 @@
+/* body {
+    background-color: rgb(13, 13, 57);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+.container {
+    display: grid;
+    grid-template-columns: repeat(3, 300px);
+    grid-template-rows: 200px 200px;
+    gap: 10px;
+
+}
+
+.container div {
+    background-color: rgb(0, 10, 203);
+
+}
+
+.modules {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    border-radius: 10px;
+
+}
+
+.modules p {
+    font-size: 20px;
+    margin-top: 3px;
+    margin-left: 15px;
+}
+
+.modules progress {
+    width: 75%;
+    
+}
+
+.modules button {
+    width: 80%;
+    height: 30px;
+    color: white;
+    background-color: aqua;
+    font-size: 15px;
+    font-weight: bold;
+    border-radius: 10px;
+} */
+
+:root {
+    --background_color: rgb(11, 11, 46);
+    --card: rgb(7, 7, 31);
+}
+
+body {
+  background: var(--background_color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  font-family: Arial, sans-serif;
+  color: white;
+  margin: 0;
+}
+
+.container {
+  display: grid;
+  grid-template-columns: repeat(3, 400px);
+  grid-template-rows: repeat(2, 250px);
+  gap: 20px;
+  padding: 20px;
+
+}
+
+.modules {
+  background: var(--card);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  border-radius: 15px;
+  padding: 20px;
+  box-shadow: 0 6px 15px rgba(0,0,0,0.3);
+  transition: transform 0.2s ease, box-shadow 0.3s ease;
+}
+
+.modules.active:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 25px rgba(0,0,0,0.5);
+}
+
+.modules.locked {
+    background: rgba(7, 7, 31, 0.5);
+}
+
+.modules p {
+  font-size: 18px;
+  font-weight: bold;
+  text-align: center;
+  margin: 0;
+}
+
+.modules.locked * {
+    opacity: 0.5;
+}
+
+.modules progress {
+  width: 80%;
+  height: 15px;
+  margin: 10px 0;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+progress::-webkit-progress-bar {
+  background-color: #2c2c54;
+  border-radius: 10px;
+}
+
+progress::-webkit-progress-value {
+  background: linear-gradient(90deg, #00d4ff, #007bff);
+  border-radius: 10px;
+}
+
+.modules button {
+  width: 85%;
+  height: 40px;
+  color: #fff;
+  background: linear-gradient(90deg, #00c6ff, #0072ff);
+  font-size: 15px;
+  font-weight: bold;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+
+  display: flex;
+  align-items: center;   /* vertically centers icon + text */
+  justify-content: center; /* keeps them centered horizontally */
+  gap: 8px; /* space between icon and text */
+}
+
+
+.modules button:hover {
+  background: linear-gradient(90deg, #0072ff, #00c6ff);
+  transform: scale(1.05);
+}
+
+.modules.locked button {
+  opacity: 1;
+}
+
+.modules.locked button img.coin-icon {
+  width: 20px;
+  height: 20px;
+  opacity: 1;
+}
