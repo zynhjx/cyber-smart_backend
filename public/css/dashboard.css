@@ -1,121 +1,187 @@
+:root {
+  --bg: #0f1724;
+  --card: #0b1220;
+  --text: #e6edf3;
+  --muted: #98a0ad;
+  --accent: #38bdf8;
+  --shadow: rgba(0,0,0,0.4);
+  --width: 1350px;
+}
+
 
 body {
-    background-color: rgb(58, 13, 58);
-    user-select: none;
-    display: flex;
-    justify-content: center;
-    height: 100vh;
-}
-
-header {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    background-color: rgb(77, 17, 77);
-    height: 70px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-
-header h1 {
-    font-family: 'Bitcount Grid Double';
-    color: white;
-    font-weight: 300;
-    margin-left: 20px;
-    font-size: 40px;
-}
-
-nav {
-    display: flex;
-    margin-right: 20px;
-    width: 45%;
-    justify-content: space-around;
-}
-
-a {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-decoration: none;
-    padding-left: 0;
-    color: white;
-    font-size: 25px;
-    font-family: 'Bitcount Single';
-    cursor: pointer;
-}
-
-.active {
-    border-bottom: solid 2px aqua;
-    color: aqua;
-}
-    
-
-
-.card-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 20px;
-    padding: 100px 20px 40px 20px;
-    margin-top: -50px;
+  background-color: var(--bg);
+  font-family: 'Bitcount Single';
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 
-.card {
-    background-color: rgb(94, 24, 94);
-    color: white;
-    width: 300px;
-    height: 55vh;
-    border-radius: 12px;
-    padding: 30px 24px;
-    box-shadow: 0 8px 16px rgba(178, 9, 201, 0.3);
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: flex-start;
-    transition: transform 0.3s, box-shadow 0.3s;
-    text-align: left;
+
+section.profile-card {
+  width: var(--width);
+  height: 150px;
+  background-color: var(--card);
+  margin-top: 100px;
+  border-radius: 20px;
+  box-shadow: 0 6px 18px var(--shadow);
+  display: flex;
+  justify-content: space-between;
 }
 
-
-.card:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 12px 24px     rgb(172, 156, 156);
+div.greet {
+  width: 40%;
+  height: 100%;
+  display: flex;
+  padding-left: 20px;
 }
 
-.card h2 {
-    font-family: 'Russo One', sans-serif;
-    margin-bottom: 10px;
-    font-size: 28px;
-    color: rgb(255, 255, 255);
+.pfp {
+  width: 18%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  margin-right: 5px;
 }
 
-
-.card p {
-    font-family: 'Bitcount Prop Single Ink';
-    font-size: 22px; /* Increased from 16px */
-    line-height: 1.5;
-    flex-grow: 1;
-    margin: 0 0 24px 0;
+.pfp img {
+  width: 100%;
+  border-radius: 50%;
+  border: solid 2px cyan;
 }
 
-.card a {
-    font-family: 'Bitcount Single';
-    font-size: 20px; /* Increased from 18px */
-    color: rgb(255, 255, 255);
-    text-decoration: none;
-    border: 2px solid rgb(255, 255, 255); /* Slightly bolder border */
-    padding: 12px 20px;
-    border-radius: 8px;
-    transition: background-color 0.3s, color 0.3s;
-    align-self: stretch;
-    text-align: center;
+.parags {
+  width: 82%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-left: 20px;
 }
 
-.card a:hover {
-    background-color: rgb(255, 255, 255);
-    color: rgb(94, 24, 94);
+.parags h2 {
+  margin: 0;
+  font-weight: 0;
+  color: var(--accent);
+}
+
+.parags p {
+  margin: 0;
+  color: white;
+}
+
+div.stats {
+  width: 40%;
+  height: 100%;
+  display: flex;
+  justify-content: space-around;
+}
+
+.profile-stat {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: white;
+}
+
+.profile-stat h2, .profile-stat p {
+  margin: 0;
+}
+
+div.snapshots {
+  width: var(--width);
+  height: 250px;
+  display: flex;
+  gap: 20px;
+  margin-top: 30px;
+}
+
+.snapshots .card1 {
+  flex: 1;
+  height: 100%;
+  background-color: var(--card);
+  display: flex;
+  flex-direction: column;
+  color: white;
+  padding: 0 30px;
+  border-radius: 20px;
+  justify-content: center;
+  box-shadow: 0 6px 18px var(--shadow);
+}
+
+.card1 h2, .card2 h2 {
+  margin-bottom: 10px;
+  margin-top: 0;
+  color: var(--accent);
+}
+
+.card1 p, .card2 p {
+  font-size: 1.2rem;
+  margin: 10px 0;
+  text-align: start;
+}
+
+.card1 progress {
+  width: 100%;
+  height: 20px;
+  margin: 10px auto;
+}
+
+.card1 button, .card2 button {
+  width: 150px;
+  background-color: var(--accent);
+  border-radius: 10px;
+  border-style: none;
+  font-weight: bold;
+  padding: 10px;
+  width: 150px;
+}
+
+.snapshots .card2 {
+  flex: 1;
+  height: 100%;
+  background-color: var(--card);
+  color: white;
+  border-radius: 20px;
+  box-shadow: 0 6px 18px var(--shadow);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0 30px;
+}
+
+.card2 button {
+  margin-top: 15px;
+}
+
+.stats-overview {
+  background-color: var(--card);
+  width: var(--width);
+  height: 180px;
+  margin-top: 30px;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border-radius: 20px;
+  box-shadow: 0 6px 18px var(--shadow);
+}
+
+.stats-overview h2 {
+  margin: 20px 0 0 20px;
+  color: var(--accent);
+}
+
+.stats-overview .stats {
+  display: flex;
+  width: 100%;
+  justify-content: space-around;
+  padding: 0 40px;
+}
+
+.stat {
+  flex: 1;
 }

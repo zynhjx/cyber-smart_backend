@@ -57,15 +57,18 @@ app.get("/dashboard", async (req, res) => {
   if (!req.isAuthenticated()) {
     res.redirect("login")
   } else {
-    res.render("pages/dashboard")
+    res.render("pages/dashboard", { user: req.user })
   }
 
-  
 });
 
 
 app.get("/login", (req, res) => {
   res.render("pages/login")
+})
+
+app.get("/training", (req, res) => {
+  res.render("pages/training")
 })
 
 app.post("/login", (req, res, next) => {
@@ -112,7 +115,11 @@ app.post("/register", async (req, res, next) => {
 
     // Insert user
     const result = await pool.query(
-      "INSERT INTO users (username, email, password) VALUES ($1, $2, $3) RETURNING *",
+      `INSERT INTO users 
+        (username, email, password, exp, level, coins, day_streak, lessons_completed, challenges_completed, accuracy_rate) 
+       VALUES 
+        ($1, $2, $3, 0, 1, 0, 0, 0, 0, 0) 
+       RETURNING *`,
       [username, email, hashedPassword]
     );
 

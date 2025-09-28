@@ -1,54 +1,82 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
+  <html lang="en">
+  <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CyberSmart Dashboard</title>
+    <title>Document</title>
     <link rel="stylesheet" href="./css/dashboard.css">
+    <link rel="stylesheet" href="./css/header.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Bitcount+Grid+Double:wght@100..900&family=Bitcount+Prop+Single+Ink:wght@100..900&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Bitcount+Single:wght@100..900&family=Russo+One&display=swap" rel="stylesheet">
-</head>
-<body>
+  </head>
+  <body>
+    
+    <%- include("../partials/header.ejs") %>
 
-    <header>
-        <a href="index.html" class="logo-link">
-            <h1>CyberSmart</h1>
-        </a>
-        <nav>
-            <a href="./dashboard.html" class="active">Dashboard</a>
-            <a href="./training.html">Training</a>
-            <a href="./challenge.html">Challenge</a>
-            <a href="./pish_guard.html">PhishGuard</a>
-        </nav>
-    </header>
+    <section class="profile-card">
+      <div class="greet">
+        <div class="pfp">
+          <img src="./assets/images/default-pfp.png" alt="">
+        </div>
+        <div class="parags">
+          <h2>Welcome back, <%= user.username %>!</h2>
+          <p>Keep going, you’re doing great</p>
+        </div>
+      </div>
+      <div class="stats">
+        <div class="profile-stat">
+          <h2><%= user.exp %></h2>
+          <p>EXP</p>
+        </div>
+        <div class="profile-stat">
+          <h2><%= user.level %></h2>
+          <p>Level</p>
+        </div>
+        <div class="profile-stat">
+          <h2><%= user.coins %></h2>
+          <p>Coins</p>
+        </div>
+        <div class="profile-stat">
+          <h2><%= user.day_streak %></h2>
+          <p>Day Streak</p>
+        </div>
+      </div>
+    </section>
 
-    <main class="card-container">
-        <div class="card">
-            <h2>Training</h2>
-            <p>Enhance your cybersecurity skills through interactive lessons and real-world scenarios.</p>
-            <a href="training.html">Start Training</a>
-        </div>
-        <div class="card">
-            <h2>Challenge</h2>
-            <p>Test your knowledge and compete in time-based cybersecurity challenges.</p>
-            <a href="challenge.html">Take Challenge</a>
-        </div>
-        <div class="card">
-            <h2>PhishGuard</h2>
-            <p>Learn to identify and avoid phishing attempts with hands-on examples.</p>
-            <a href="pish_guard.html">Try PhishGuard</a>
-        </div>
-        <div class="card">
-            <h2>Coming Soon</h2>
-            <p>Stay tuned for more cybersecurity tools and training experiences. More is on the way!</p>
-            <a href="#" style="pointer-events: none; opacity: 0.5;">Coming Soon</a>
-        </div>
-    </main> 
+    <div class="snapshots">
+      <section class="card1">
+        <h2>Training</h2>
+        <p>Current Module:</p>
+        <p>Lesson:</p>
+        <progress value="10" max="100"></progress>
+        <button>Continue Training</button>
+      </section>
 
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <script src="./js/dashboard.js"></script>
-</body>
+      <section class="card2">
+        <h2>Challenges</h2>
+        <p>Today’s Challenge</p>
+        <p>Spot the phishing email</p>
+        <button>Start Challenge</button>
+      </section>
+    </div>
+
+    <section class="stats-overview">
+      <h2>Stats Overview</h2>
+      <div class="stats">
+        <div class="stat">
+          <h3>Lessons Completed</h3>
+          <p><%= user.lessons_completed %></p>
+        </div>
+        <div class="stat">
+          <h3>Challenges Completed</h3>
+          <p><%= user.challenges_completed %></p>
+        </div>
+        <div class="stat">
+          <h3>Accuracy Rate</h3>
+          <p><%= user.accuracy_rate %></p>
+        </div>
+      </div>
+    </section>
+  </body>
 </html>
- 
