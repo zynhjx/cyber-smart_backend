@@ -57,7 +57,10 @@ app.get("/dashboard", async (req, res) => {
   if (!req.isAuthenticated()) {
     res.redirect("login")
   } else {
-    res.render("pages/dashboard", { user: req.user })
+    res.render("pages/dashboard", {
+      user: req.user,
+      activePage: "dashboard"
+     })
   }
 
 });
@@ -68,7 +71,7 @@ app.get("/login", (req, res) => {
 })
 
 app.get("/training", (req, res) => {
-  res.render("pages/training")
+  res.render("pages/training", { activePage: "training" })
 })
 
 app.post("/login", (req, res, next) => {

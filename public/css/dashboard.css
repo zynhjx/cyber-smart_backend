@@ -18,8 +18,6 @@ body {
   align-items: center;
 }
 
-
-
 section.profile-card {
   width: var(--width);
   height: 150px;

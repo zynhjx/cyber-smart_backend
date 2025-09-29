@@ -1,10 +1,10 @@
 <header>
   <div class="logo">CyberSmart</div>
   <nav>
-    <a href="/dashboard">Dashboard</a>
-    <a href="/training">Training</a>
-    <a href="/challenges">Challenges</a>
-    <a href="/profile">Profile</a>
-    <a href="/logout">Logout</a>
+    <a href="/dashboard" class="<%= activePage === 'dashboard' ? 'active' : '' %>">Dashboard</a>
+    <a href="/training" class="<%= activePage === 'training' ? 'active' : '' %>">Training</a>
+    <a href="/challenges" class="<%= activePage === 'challenges' ? 'active' : '' %>">Challenges</a>
+    <a href="/profile" class="<%= activePage === 'profile' ? 'active' : '' %>">Profile</a>
+    <a href="/logout" class="<%= activePage === 'logout' ? 'active' : '' %>">Logout</a>
   </nav>
 </header>

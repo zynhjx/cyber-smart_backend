@@ -1,8 +1,22 @@
+:root {
+  --bg: #0f1724;
+  --card: #0b1220;
+  --text: #e6edf3;
+  --muted: #98a0ad;
+  --accent: #38bdf8;
+  --shadow: rgba(0,0,0,0.4);
+}
+body {
+    font-family: 'Bitcount Single';
+    background: var(--bg);
+}
+
 header {
   display: flex;
   background-color: var(--bg);
   align-items: center;
   justify-content: space-between;
+  font-family: 'Bitcount Single';
   position: fixed;
   top: 0;
   right: 0;
@@ -28,4 +42,10 @@ nav a {
   color: white;
   font-size: 1.2rem;
   text-decoration: none;
+}
+
+nav a.active {
+  color: var(--accent);
+  font-weight: bold;
+  border-bottom: 2px solid var(--accent);
 }

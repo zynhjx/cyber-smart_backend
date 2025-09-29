@@ -1,57 +1,11 @@
-/* body {
-    background-color: rgb(13, 13, 57);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-}
-
-.container {
-    display: grid;
-    grid-template-columns: repeat(3, 300px);
-    grid-template-rows: 200px 200px;
-    gap: 10px;
-
-}
-
-.container div {
-    background-color: rgb(0, 10, 203);
-
-}
-
-.modules {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-around;
-    border-radius: 10px;
-
-}
-
-.modules p {
-    font-size: 20px;
-    margin-top: 3px;
-    margin-left: 15px;
-}
-
-.modules progress {
-    width: 75%;
-    
-}
-
-.modules button {
-    width: 80%;
-    height: 30px;
-    color: white;
-    background-color: aqua;
-    font-size: 15px;
-    font-weight: bold;
-    border-radius: 10px;
-} */
-
 :root {
-    --background_color: rgb(11, 11, 46);
-    --card: rgb(7, 7, 31);
+  --background_color: #0f1724;
+  --card: #0b1220;
+  --text: #e6edf3;
+  --muted: #98a0ad;
+  --accent: #38bdf8;
+  --shadow: rgba(0,0,0,0.4);
+  --width: 1350px;
 }
 
 body {
@@ -86,7 +40,7 @@ body {
   transition: transform 0.2s ease, box-shadow 0.3s ease;
 }
 
-.modules.active:hover {
+.modules.unlocked:hover {
   transform: translateY(-8px);
   box-shadow: 0 12px 25px rgba(0,0,0,0.5);
 }
@@ -139,7 +93,7 @@ progress::-webkit-progress-value {
   display: flex;
   align-items: center;   /* vertically centers icon + text */
   justify-content: center; /* keeps them centered horizontally */
-  gap: 8px; /* space between icon and text */
+  gap: 6px; /* space between icon and text */
 }
 
 
