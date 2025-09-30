@@ -71,7 +71,15 @@ app.get("/login", (req, res) => {
 })
 
 app.get("/training", (req, res) => {
-  res.render("pages/training", { activePage: "training" })
+
+  if (!req.isAuthenticated()) {
+    res.redirect("login")
+  } else {
+    res.render("pages/training", {
+      user: req.user,
+      activePage: "training"
+     })
+  }
 })
 
 app.post("/login", (req, res, next) => {
@@ -121,7 +129,7 @@ app.post("/register", async (req, res, next) => {
       `INSERT INTO users 
         (username, email, password, exp, level, coins, day_streak, lessons_completed, challenges_completed, accuracy_rate) 
        VALUES 
-        ($1, $2, $3, 0, 1, 0, 0, 0, 0, 0) 
+        ($1, $2, $3, 0, 1, 30, 0, 0, 0, 0) 
        RETURNING *`,
       [username, email, hashedPassword]
     );
