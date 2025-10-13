@@ -124,37 +124,41 @@ function renderPage(){
 
   // Fill-type page
 
-  if(page.type==='fill'){
-    const qEl=document.createElement('div'); qEl.className='lead';
+  if (page.type === 'fill') {
+    const qEl = document.createElement('div');
+    qEl.className = 'lead';
     panel.appendChild(qEl);
 
-    const prefix=document.createElement('span'); 
-    prefix.textContent=page.q; 
+    const prefix = document.createElement('span');
+    prefix.textContent = page.q;
     qEl.appendChild(prefix);
 
-    const blanksContainer=document.createElement('span'); 
-    blanksContainer.className='fill-blank-inline'; 
+    const blanksContainer = document.createElement('span');
+    blanksContainer.className = 'fill-blank-inline';
     qEl.appendChild(blanksContainer);
 
-    const blanks=[];
-    const poolDiv=document.createElement('div'); 
-    poolDiv.className='drag-letters';
+    const blanks = [];
+    const poolDiv = document.createElement('div');
+    poolDiv.className = 'drag-letters';
 
     let letters = page.answer.split('');
     shuffleArray(letters);
-    letters.forEach(letter=>{
-      const lDiv=document.createElement('div'); 
-      lDiv.className='letter'; 
-      lDiv.textContent=letter; 
-      lDiv.draggable=true;
-      lDiv.addEventListener('dragstart', e=>e.dataTransfer.setData('text', letter));
+    letters.forEach(letter => {
+      const lDiv = document.createElement('div');
+      lDiv.className = 'letter';
+      lDiv.textContent = letter;
+      lDiv.draggable = true;
+      lDiv.addEventListener('dragstart', e => e.dataTransfer.setData('text', letter));
       poolDiv.appendChild(lDiv);
     });
 
-    for(let i=0;i<page.answer.length;i++){
-      const box=document.createElement('span');
-      box.className='blank-box';
-      box.contentEditable=true;
+    // Track which letters came from pool
+    const removedFromPool = new Set();
+
+    for (let i = 0; i < page.answer.length; i++) {
+      const box = document.createElement('span');
+      box.className = 'blank-box';
+      box.contentEditable = true;
       blanksContainer.appendChild(box);
       blanks.push(box);
 
@@ -167,88 +171,105 @@ function renderPage(){
         sel.addRange(range);
       };
 
-      box.addEventListener('input', () => {
-        placeCursorAtEnd(box);
-        if(i < blanks.length-1 && box.textContent) blanks[i+1].focus();
+      box.addEventListener('input', e => {
+        const val = box.textContent.trim().toLowerCase();
 
-        // Enable Check if all blanks are filled
+        // remove matching letter from pool only if it exists
+        const letterEl = Array.from(poolDiv.children).find(l => l.textContent.toLowerCase() === val);
+        if (letterEl) {
+          letterEl.remove();
+          removedFromPool.add(val);
+        }
+
+        if (i < blanks.length - 1 && box.textContent) blanks[i + 1].focus();
+
         const allFilled = blanks.every(b => b.textContent.trim() !== "");
         checkBtn.disabled = !allFilled;
       });
 
-      box.addEventListener('keydown', (e)=>{
-        if(e.key === "ArrowLeft" && i>0){ 
-          e.preventDefault(); 
-          blanks[i-1].focus(); 
-          placeCursorAtEnd(blanks[i-1]);
-        }
-        if(e.key === "ArrowRight" && i<blanks.length-1){ 
-          e.preventDefault(); 
-          blanks[i+1].focus(); 
-          placeCursorAtEnd(blanks[i+1]);
-        }
-        if(e.key === "Backspace"){
+      box.addEventListener('keydown', e => {
+        if (e.key === "ArrowLeft" && i > 0) {
           e.preventDefault();
-          if(box.textContent){ 
-            box.textContent = ""; 
-            placeCursorAtEnd(box);
-          } else if(i>0){
-            blanks[i-1].textContent = ""; 
-            blanks[i-1].focus(); 
-            placeCursorAtEnd(blanks[i-1]);
+          blanks[i - 1].focus();
+          placeCursorAtEnd(blanks[i - 1]);
+        }
+        if (e.key === "ArrowRight" && i < blanks.length - 1) {
+          e.preventDefault();
+          blanks[i + 1].focus();
+          placeCursorAtEnd(blanks[i + 1]);
+        }
+        if (e.key === "Backspace") {
+          e.preventDefault();
+
+          const removed = box.textContent.trim().toLowerCase();
+          box.textContent = "";
+
+          // only restore if it was originally removed from pool
+          if (removed && removedFromPool.has(removed)) {
+            const restore = document.createElement('div');
+            restore.className = 'letter';
+            restore.textContent = removed;
+            restore.draggable = true;
+            restore.addEventListener('dragstart', ev => ev.dataTransfer.setData('text', removed));
+            poolDiv.appendChild(restore);
+            removedFromPool.delete(removed);
           }
-          // recheck Check button
+
+          if (i > 0) {
+            blanks[i - 1].focus();
+            placeCursorAtEnd(blanks[i - 1]);
+          }
+
           const allFilled = blanks.every(b => b.textContent.trim() !== "");
           checkBtn.disabled = !allFilled;
         }
       });
 
-      box.addEventListener('dragover', e=>e.preventDefault());
-      box.addEventListener('drop', e=>{
+      box.addEventListener('dragover', e => e.preventDefault());
+      box.addEventListener('drop', e => {
         e.preventDefault();
-        const letter=e.dataTransfer.getData('text');
-        box.textContent=letter;
-        if(i<blanks.length-1) blanks[i+1].focus();
+        const letter = e.dataTransfer.getData('text');
+        box.textContent = letter;
+        if (i < blanks.length - 1) blanks[i + 1].focus();
         placeCursorAtEnd(box);
 
-        poolDiv.querySelectorAll('.letter').forEach(l=>{
-          if(l.textContent.toLowerCase() === letter.toLowerCase()) l.remove();
-        });
+        const letterEl = Array.from(poolDiv.children).find(l => l.textContent.toLowerCase() === letter.toLowerCase());
+        if (letterEl) {
+          letterEl.remove();
+          removedFromPool.add(letter.toLowerCase());
+        }
 
-        // Enable Check if all blanks filled
         const allFilled = blanks.every(b => b.textContent.trim() !== "");
         checkBtn.disabled = !allFilled;
       });
     }
 
-    const suffix=document.createElement('span'); 
-    suffix.textContent=page.suffix; 
+    const suffix = document.createElement('span');
+    suffix.textContent = page.suffix;
     qEl.appendChild(suffix);
     panel.appendChild(poolDiv);
 
-    // Show Check button
-    checkBtn.style.display='inline-block';
-    checkBtn.disabled = true; // initially disabled
-    nextBtn.disabled = true;  // Next locked until Check clicked
+    checkBtn.style.display = 'inline-block';
+    checkBtn.disabled = true;
+    nextBtn.disabled = true;
 
     checkBtn.onclick = () => {
       const userAnswer = blanks.map(b => b.textContent).join('');
-      
+
       for (let i = 0; i < blanks.length; i++) {
         if (userAnswer[i]?.toLowerCase() === page.answer[i].toLowerCase()) {
-          blanks[i].style.borderColor = "var(--ok)"; // green for correct
+          blanks[i].style.borderColor = "var(--ok)";
         } else {
-          blanks[i].style.borderColor = "var(--bad)"; // red for wrong
+          blanks[i].style.borderColor = "var(--bad)";
         }
       }
 
-      nextBtn.disabled = false;  // enable Next after Check
-      checkBtn.disabled = true;  // disable Check after clicked
+      nextBtn.disabled = false;
+      checkBtn.disabled = true;
     };
-
-
-    return;
   }
+
+
 
 
   // Multiple choice
