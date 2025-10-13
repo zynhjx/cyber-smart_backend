@@ -5,11 +5,7 @@
   --muted: #98a0ad;
   --accent: #38bdf8;
   --shadow: rgba(0,0,0,0.4);
-}
-
-body {
-    font-family: 'Bitcount Single';
-    background: var(--bg);
+  --title: #cfc9ff;
 }
 
 header {
@@ -25,6 +21,7 @@ header {
   height: 55px;
   border-bottom: 1px solid #1f2937;
   padding: 0 20px;
+  z-index: 1000;
 }
 
 .left {

@@ -5,7 +5,7 @@ body {
 }
 
 
-.login-container {
+.register-container {
   height: 100vh;
   display: flex;
   align-items: center;
@@ -14,17 +14,17 @@ body {
   position: relative;
 }
 
-.login-box {
+.register-box {
   background-color: rgba(0, 0, 0, 0.75);
   padding: 40px;
-  border: 2px solid rgb(255, 96, 255);
+  border: 2px solid #38bdf8;
   border-radius: 50px;
   width: 90%;
   max-width: 400px;
-  box-shadow: 0 0 50px rgb(255, 96, 255);
+  box-shadow: 0 0 50px #38bdf8;
 }
 
-.login-box h2 {
+.register-box h2 {
   margin-bottom: 30px;
   color: rgb(255, 255, 255);
   text-align: center;
@@ -33,14 +33,14 @@ body {
   font-weight: 400;
 }
 
-.login-box label {
+.register-box label {
   font-size: 0.9rem;
   margin-bottom: 6px;
   display: block;
   color: #ccc;
 }
 
-.login-box input {
+.register-box input {
   width: 100%;
   padding: 12px;
   margin-bottom: 20px;
@@ -51,35 +51,35 @@ body {
   font-size: 1rem;
 }
 
-.login-box button {
+.register-box button {
   width: 100%;
   padding: 12px;
   border: none;
   border-radius: 5px;
-  background-color: rgb(128, 28, 128);
-  color: #ffffff;
+  background-color: #38bdf8;
+  color: black;
   font-weight: bold;
   font-size: 1rem;
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
 
-.login-box button:hover {
+.register-box button:hover {
     opacity: 0.8;
 }
 
-.login-box .links {
+.register-box .links {
   text-align: center;
   margin-top: 15px;
   font-size: 0.85rem;
 }
 
-.login-box .links a {
-  color: #00c2ff;
+.register-box .links a {
+  color: #38bdf8;
   text-decoration: none;
 }
 
-.login-box .links a:hover {
+.register-box .links a:hover {
   text-decoration: underline;
 }
 

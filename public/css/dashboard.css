@@ -1,11 +1,13 @@
 :root {
   --bg: #0f1724;
   --card: #0b1220;
+  --testcard: rgb(48, 12, 48);
   --text: #e6edf3;
   --muted: #98a0ad;
-  --accent: #38bdf8;
+  --accent: #38bdf8; 
   --shadow: rgba(0,0,0,0.4);
-  --width: 1350px;
+  --width: 1150px;
+  --testbg: rgb(29, 7, 29);
 }
 
 
@@ -16,17 +18,26 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding-bottom: 100px;
+}
+
+.card {
+  background-color: var(--card);
+}
+
+.card h2 {
+  font-weight: 400;
 }
 
 section.profile-card {
   width: var(--width);
   height: 150px;
-  background-color: var(--card);
   margin-top: 100px;
   border-radius: 20px;
   box-shadow: 0 6px 18px var(--shadow);
   display: flex;
   justify-content: space-between;
+  margin-bottom: 30px;
 }
 
 div.greet {
@@ -71,7 +82,7 @@ div.greet {
 }
 
 div.stats {
-  width: 40%;
+  width: 30%;
   height: 100%;
   display: flex;
   justify-content: space-around;
@@ -91,72 +102,90 @@ div.stats {
 
 div.snapshots {
   width: var(--width);
-  height: 250px;
+  height: auto;
   display: flex;
-  gap: 20px;
-  margin-top: 30px;
+  gap: 40px;
 }
 
-.snapshots .card1 {
+.snapshots .card {
   flex: 1;
-  height: 100%;
-  background-color: var(--card);
+  height: auto;
   display: flex;
   flex-direction: column;
   color: white;
-  padding: 0 30px;
+  padding: 30px 30px;
   border-radius: 20px;
-  justify-content: center;
+  justify-content: start;
   box-shadow: 0 6px 18px var(--shadow);
 }
 
-.card1 h2, .card2 h2 {
-  margin-bottom: 10px;
-  margin-top: 0;
-  color: var(--accent);
+.card .card-thumbnail {
+  height: 200px;
 }
 
-.card1 p, .card2 p {
-  font-size: 1.2rem;
-  margin: 10px 0;
-  text-align: start;
-}
-
-.card1 progress {
+.thumbnail {
   width: 100%;
-  height: 20px;
-  margin: 10px auto;
-}
-
-.card1 button, .card2 button {
-  width: 150px;
-  background-color: var(--accent);
-  border-radius: 10px;
-  border-style: none;
-  font-weight: bold;
-  padding: 10px;
-  width: 150px;
-}
-
-.snapshots .card2 {
-  flex: 1;
   height: 100%;
-  background-color: var(--card);
-  color: white;
-  border-radius: 20px;
-  box-shadow: 0 6px 18px var(--shadow);
+  object-fit: cover;
+  border-radius: 15px;
+}
+
+.card .info {
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  padding: 0 30px;
+  padding: 0 10px;
 }
 
-.card2 button {
-  margin-top: 15px;
+.info.challenge {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.info .prog-btn {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.prog-btn progress {
+  width: 55%;
+  height: 18px;
+}
+
+.continue-btn {
+  background-color: var(--accent);
+  border: none;
+  border-radius: 3px;
+  height: 30px;
+  color: black;
+  font-family: 'Bitcount Single';
+  font-size: 18px;
+  font-weight: 500;
+  width: auto;
+  padding: 0 15px;
+
+  cursor: pointer;
+}
+
+.card2 .card-thumbnail {
+  height: 230px;
+}
+
+.card2 .module {
+  font-size: 23px;
+}
+
+.card2.locked {
+  position: relative;
+  filter: grayscale(100%) brightness(0.6);
+  opacity: 0.7;
+  pointer-events: none;
 }
 
 .stats-overview {
-  background-color: var(--card);
   width: var(--width);
   height: 180px;
   margin-top: 30px;
@@ -182,4 +211,20 @@ div.snapshots {
 
 .stat {
   flex: 1;
+}
+
+.card2.locked::after {
+  content: attr(data-locked-text); /* dynamically controlled by EJS */
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(1.2);
+  color: white;
+  background: rgba(0,0,0,0.6);
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-weight: bold;
+  text-align: center;
+  border: solid 1px gray;
+  white-space: pre-line; /* allows multi-line text if needed */
 }

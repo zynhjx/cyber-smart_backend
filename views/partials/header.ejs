@@ -4,16 +4,15 @@
       <a href="/dashboard" class="nav <%= activePage === 'dashboard' ? 'active' : '' %>">CyberSmart</a>
     </div>
     <nav class="main-nav">
-      <a href="/training" class="navs <%= activePage === 'training' ? 'active' : '' %>">Training</a>
-      <a href="/challenges" class="navs <%= activePage === 'challenges' ? 'active' : '' %>">Challenges</a>
+      <a href="/training?filter=all" class="navs <%= activePage === 'training' ? 'active' : '' %>">Training</a>
+      <a href="/challenge" class="navs <%= activePage === 'challenge' ? 'active' : '' %>">Challenges</a>
     </nav>
   </div>
   
   <div class="right">
     <div class="header-stats">
-      <div class="coins mini"><%= user.coins %> coin/s</div>
+      <div class="coins mini"><%= user.orbs %> Orbs</div>
       <div class="level mini">Lvl <%= user.level %></div>
-      <div class="streak mini">Streak: <%= user.day_streak %></div>
     </div>
     <a href="/profile" class="navs <%= activePage === 'profile' ? 'active' : '' %>">Profile</a>
     <a href="/logout" class="navs <%= activePage === 'logout' ? 'active' : '' %>">Logout</a>

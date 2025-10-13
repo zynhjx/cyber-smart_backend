@@ -92,8 +92,8 @@ p.fourth {
     width: 60%;
     height: 15%;
     border-radius: 30px;
-    background-color: rgb(128, 28, 128);
-    color: white;
+    background-color: #38bdf8;
+    color: black;
     font-size: 70px;
     box-shadow: 0 0 60px black;
     font-family: 'Bitcount Single';
@@ -116,7 +116,8 @@ p.fourth {
 .btn button:active {
     box-shadow: 0 0 100px black;
     transform: scale(1.08) rotate(2deg);
-    background: rgba(128, 28, 128, 0.871);
+    background: #38bdf8;
+    opacity: 0.8;
 }
 
 @media (max-width: 1300px) {

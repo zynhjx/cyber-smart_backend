@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Dashboard</title>
     <link rel="stylesheet" href="./css/dashboard.css">
     <link rel="stylesheet" href="./css/global.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -14,7 +14,7 @@
     
     <%- include("../partials/header.ejs") %>
 
-    <section class="profile-card">
+    <section class="profile-card card">
       <div class="greet">
         <div class="pfp">
           <img src="./assets/images/default-pfp.png" alt="">
@@ -34,34 +34,66 @@
           <p>Level</p>
         </div>
         <div class="profile-stat">
-          <h2><%= user.coins %></h2>
-          <p>Coins</p>
-        </div>
-        <div class="profile-stat">
-          <h2><%= user.day_streak %></h2>
-          <p>Day Streak</p>
+          <h2><%= user.orbs %></h2>
+          <p>Orbs</p>
         </div>
       </div>
     </section>
 
+
     <div class="snapshots">
-      <section class="card1">
-        <h2>Training</h2>
-        <p>Current Module:</p>
-        <p>Lesson:</p>
-        <progress value="10" max="100"></progress>
-        <button>Continue Training</button>
+      <section class="card1 card">
+        <div class="card-thumbnail">
+          <img class="thumbnail" draggable="false" src="<%= currentModule.thumbnail %>" alt="">
+        </div>
+        <div class="info">
+          <h3 class="module"><%= currentModule.name %></h3>
+          <div class="prog-btn">
+            <progress value="<%= currentModule.progress %>" max="100"></progress>
+            <button class="continue-btn" 
+                    onclick="window.location.href='/training/module/<%= currentModule.order_index %>/lesson/<%= currentLesson.order_index %>'">
+              <% if (currentModule.progress === 0) { %>
+                Get Started
+              <% } else if (currentModule.progress >= 100) { %>
+                Finished
+              <% } else { %>
+                Continue
+              <% } %>
+            </button>
+          </div>
+        </div>
       </section>
 
-      <section class="card2">
-        <h2>Challenges</h2>
-        <p>Today’s Challenge</p>
-        <p>Spot the phishing email</p>
-        <button>Start Challenge</button>
+      <section 
+        class="card2 card <%= challengeSnapshot.locked ? "locked" : "" %>"
+        <% if (challengeSnapshot.locked) { %>
+            data-locked-text="Complete the module to unlock"
+          <% } %>>
+
+        <div class="card-thumbnail">
+          <img class="thumbnail" draggable="false" src="<%= challengeSnapshot.thumbnail %>" alt="">
+        </div>
+
+        <div class="info challenge">
+          <h3 class="module"><%= challengeSnapshot.name %></h3>
+
+          <% if (challengeSnapshot.locked) { %>
+            <button class="continue-btn" disabled>
+              Locked
+            </button>
+          <% } else { %>
+            <button class="continue-btn" onclick="window.location.href='/challenge/module/<%= currentModule.order_index %>'">
+              <%= challengeSnapshot.finished ? "Completed" : "Continue" %>
+            </button>
+          <% } %>
+        </div>
       </section>
+
     </div>
 
-    <section class="stats-overview">
+
+
+    <section class="stats-overview card">
       <h2>Stats Overview</h2>
       <div class="stats">
         <div class="stat">

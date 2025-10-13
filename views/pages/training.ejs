@@ -1,70 +1,108 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cybersecurity Training</title>
-  <link rel="stylesheet" href="./css/global.css">
-  <link rel="stylesheet" href="./css/training.css">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Bitcount+Single:wght@100..900&family=Russo+One&display=swap" rel="stylesheet">
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cybersecurity Training</title>
+    <link rel="stylesheet" href="./css/global.css">
+    <link rel="stylesheet" href="./css/training.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bitcount+Single:wght@100..900&family=Russo+One&display=swap" rel="stylesheet">
+  </head>
+  <body>
 
   <%- include("../partials/header.ejs") %>
 
-  <div class="container">
-    <div class="modules unlocked">
-      <p>Introduction to Cybersecurity</p>
-      <progress value="1" max="3"></progress>
-      <button class="active">Start Module</button>
+    <div class="sidebar">
+      <div class="ov-progress">
+        <div class="title-percent">
+          <p class="title">Overall Progress</p>
+          <p class="percent"><%= overallProgress %>%</p>
+        </div>
+
+        <progress value="<%= overallProgress %>" max="100"></progress>
+        <p class="completed"><%= completedModules %> of <%= totalModules %> modules completed</p>
+      </div>
+
+      <div class="grid-stats">
+        <div class="cards">
+          <h3 class="stats-completed"><%= completedModules %></h3>
+          <p class="label">Completed</p>
+        </div>
+        <div class="cards">
+          <h3 class="stats-inProgress"><%= inProgressModules %></h3>
+          <p class="label">In Progress</p>
+        </div>
+        <div class="cards">
+          <h3 class="stats-notStarted"><%= notStartedModules %></h3>
+          <p class="label">Not Started</p>
+        </div>
+        <div class="cards">
+          <h3 class="stats-total"><%= totalModules %></h3>
+          <p class="label">Total</p>
+        </div>
+      </div>
+
+      <h3 class="label">Module Progress</h3>
+
+      <% all_modules.forEach(module => { %>
+        <div class="module-progress">
+          <p class="module-name"><%= module.name %></p>
+          <div class="progress">
+            <progress value="<%= module.progress || 0 %>" max="100"></progress>
+            <p><%= module.progress %>%</p>
+          </div>
+        </div>
+      <% }) %>
     </div>
 
-    <div class="modules locked">
-      <p>Understanding Threats</p>
-      <progress value="0" max="100"></progress>
-      <button>
-        <img class="coin-icon" src="assets/images/coin-icon.png" alt="icon">
-        50 coins
-      </button>
-    </div>
+    <main>
+      <div class="filter-btn-container">
+        <div class="filter-btn">
+          <a href="/training?filter=all" class="btns <%= currentFilter === 'all' ? 'active' : '' %>">All Modules</a>
+          <a href="/training?filter=completed" class="btns <%= currentFilter === 'completed' ? 'active' : '' %>">Completed</a>
+          <a href="/training?filter=in-progress" class="btns <%= currentFilter === 'in-progress' ? 'active' : '' %>">In Progress</a>
+          <a href="/training?filter=not-started" class="btns <%= currentFilter === 'not-started' ? 'active' : '' %>">Not Started</a>
+        </div>
+      </div>
 
-    <div class="modules locked">
-      <p>Safe Practice for Users</p>
-      <progress value="0" max="100"></progress>
-      <button>
-        <img class="coin-icon" src="assets/images/coin-icon.png" alt="icon">
-        50 coins
-      </button>
-    </div>
-
-    <div class="modules locked">
-      <p>Network & Online Safety</p>
-      <progress value="0" max="100"></progress>
-      <button>
-        <img class="coin-icon" src="assets/images/coin-icon.png" alt="icon">
-        50 coins
-      </button>
-    </div>
-
-    <div class="modules locked">
-      <p>Incident Response & Awareness</p>
-      <progress value="0" max="100"></progress>
-      <button>
-        <img class="coin-icon" src="assets/images/coin-icon.png" alt="icon">
-        50 coins
-      </button>
-    </div>
-
-    <div class="modules locked">
-      <p>Practice & Challenges</p>
-      <progress value="0" max="100"></progress>
-      <button>
-        <img class="coin-icon" src="assets/images/coin-icon.png" alt="icon">
-        50 coins
-      </button>
-    </div>
-  </div>
-</body>
+      
+    <% if (!modules || modules.length === 0) { %>
+      <h2 class="display">No modules available</h2>
+    <% } else { %>
+      <div class="modules">
+      <% modules.forEach(module => { %>
+        <div class="cards <%= module.locked ? 'locked' : '' %>"
+          <% if (module.locked) { %>
+            data-locked-text="Purchase this module to unlock"
+          <% } %>>
+          <div class="thumbnail">
+            <img src="<%= module.thumbnail %>" alt="">
+          </div>
+          <p class="module-title"><%= module.name %></p>
+          <div class="progress-btn">
+          <% if (!module.locked) { %>
+            <progress value="<%= module.progress %>" max="100"></progress>
+            <button class="continue-btn" onclick="window.location.href='/training/module/<%= module.order_index %>/lesson/<%= module.currentLesson.order_index %>'">
+              <% if (module.progress === 0) { %>
+                Get Started
+              <% } else if (module.progress >= 100) { %>
+                Finished
+              <% } else { %>
+                Continue
+              <% } %>
+            </button>
+          <% } else { %>
+            <button class="continue-btn">
+              Unlock (<%= module.price %> Orbs) 
+            </button>
+          <% } %>
+        </div>
+        </div>
+      <% }) %>
+    <% } %>
+      </div>
+    </main>
+  </body>
 </html>

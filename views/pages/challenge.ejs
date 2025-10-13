@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cybersecurity Challenges</title>
+    <link rel="stylesheet" href="./css/global.css">
+    <link rel="stylesheet" href="./css/challenge.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bitcount+Single:wght@100..900&family=Russo+One&display=swap" rel="stylesheet">
+  </head>
+  <body>
+
+  <%- include("../partials/header.ejs") %>
+
+    <div class="sidebar">
+      <div class="ov-progress">
+        <div class="title-percent">
+          <p class="title">Overall Progress</p>
+          <p class="percent"><%= overallPercent || 0 %>%</p>
+        </div>
+
+        <progress value="<%= overallPercent || 0 %>" max="100"></progress>
+        <p class="completed"><%= completedChallenges || 0 %> of <%= totalChallenges || 5 %> challenges completed</p>
+      </div>
+
+      <div class="grid-stats">
+        <div class="cards">
+          <h3 class="stats-completed"><%= completedChallenges || 0 %></h3>
+          <p class="label">Completed</p>
+        </div>
+        <div class="cards">
+          <h3 class="stats-inProgress"><%= inProgressChallenges || 0 %></h3>
+          <p class="label">In Progress</p>
+        </div>
+        <div class="cards">
+          <h3 class="stats-notStarted"><%= notStartedChallenges || 0 %></h3>
+          <p class="label">Not Started</p>
+        </div>
+        <div class="cards">
+          <h3 class="stats-total"><%= totalChallenges || 5 %></h3>
+          <p class="label">Total</p>
+        </div>
+      </div>
+    </div>
+
+    <main>
+      <div class="filter-btn-container">
+        <div class="filter-btn">
+          <a href="/challenge?filter=all" class="btns <%= currentFilter === 'all' ? 'active' : '' %>">All Challenges</a>
+          <a href="/challenge?filter=completed" class="btns <%= currentFilter === 'completed' ? 'active' : '' %>">Completed</a>
+          <a href="/challenge?filter=not-started" class="btns <%= currentFilter === 'not-started' ? 'active' : '' %>">Not Started</a>
+        </div>
+      </div>
+
+      
+    <% if (!challenges || challenges.length === 0) { %>
+      <h2 class="display">No challenges available</h2>
+    <% } else { %>
+      <div class="modules">
+      <% challenges.forEach(challenge => { %>
+        <div class="cards <%= challenge.locked ? 'locked' : '' %>"
+          <% if (challenge.locked) { %>
+            data-locked-text="Complete the module to unlock"
+          <% } %>>
+          <div class="thumbnail">
+            <img src="<%= challenge.thumbnail %>" alt="">
+          </div>
+          <div class="title-btn">
+            <p class="module-title"><%= challenge.name %></p>
+            <% if (!challenge.locked) { %>
+            <button class="continue-btn" onclick="window.location.href = '/challenge/module/<%= challenge.order_index %>'">
+              <%= challenge.finished ? 'Finished' : 'Get Started' %></button>
+            <% } else { %>
+              <button class="continue-btn" disabled>Locked</button>
+            <% } %>
+          </div>
+        </div>
+      <% }) %>
+    <% } %>
+      </div>
+    </main>
+  </body>
+</html>
