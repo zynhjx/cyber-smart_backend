@@ -292,6 +292,36 @@ html, body {
   animation: fadeOut 0.18s ease both;
 }
 
+.pool-letter {
+  display: inline-block;
+  margin: 4px;
+  padding: 8px 10px;
+  background: #222;
+  border-radius: 8px;
+  cursor: pointer;
+  user-select: none;
+  transition: transform 0.2s ease;
+}
+.pool-letter:hover {
+  transform: scale(1.1);
+}
+.pool-letter.used {
+  opacity: 0;
+  pointer-events: none;
+}
+.fill-input {
+  background: #111;
+  border: 2px solid #333;
+  border-radius: 8px;
+  color: white;
+  font-size: 20px;
+  padding: 6px 10px;
+  width: 200px;
+  text-align: center;
+  transition: color 0.3s ease;
+}
+
+
 @keyframes fadeIn {
   from {
     opacity: 0;
