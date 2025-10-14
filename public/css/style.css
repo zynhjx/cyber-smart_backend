@@ -9,25 +9,78 @@ body {
     user-select: none;
 }
 
+:root {
+  --bg: #0f1724;
+  --card: #0b1220;
+  --text: #e6edf3;
+  --muted: #98a0ad;
+  --accent: #38bdf8;
+  --shadow: rgba(0, 0, 0, 0.4);
+  --title: #cfc9ff;
+}
+
 .preloader {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgb(40, 9, 40);
-  color: rgb(128, 28, 128);
-  font-weight: bold;
+  background: var(--bg);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 9999;
+  transition: opacity 0.5s ease;
 }
 
-.preloader p {
-    font-size: 50px;
-    font-style: italic;
+.loader-wrapper {
+  text-align: center;
+  color: var(--text);
+  animation: fadeIn 1.2s ease;
 }
+
+.cyber-spinner {
+  width: 70px;
+  height: 70px;
+  border: 4px solid transparent;
+  border-top: 4px solid var(--accent);
+  border-right: 4px solid var(--accent);
+  border-radius: 50%;
+  animation: spin 1.2s linear infinite, glow 1.8s ease-in-out infinite alternate;
+  margin: 0 auto 25px auto;
+  box-shadow: 0 0 15px var(--accent);
+}
+
+.loading-text {
+  font-size: 18px;
+  letter-spacing: 2px;
+  color: var(--title);
+  font-weight: 500;
+  text-transform: uppercase;
+  animation: pulse 1.6s ease-in-out infinite;
+  text-shadow: 0 0 10px var(--accent);
+}
+
+/* Animations */
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+
+@keyframes glow {
+  0% { box-shadow: 0 0 10px var(--accent); }
+  100% { box-shadow: 0 0 25px var(--accent); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
 
 #bg-video {
   position: fixed;
